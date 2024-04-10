@@ -8,6 +8,10 @@ import (
 	"strconv"
 	"strings"
 )
+var allCommands = `create <your_note> : Creates a new note with the specified content.
+list: Lists all the notes.
+clear: Clears all the notes.
+exit: Exits the application.`
 
 type notepad struct {
 	Notes                           []string
@@ -80,6 +84,7 @@ mainLoop:
 		command, content = func() (string, string) {
 			entry := regexp.MustCompile(`\s+`).Split(scanner.Text(), 2)
 			entry = append(entry, content)
+			fmt.Println(entry)
 			return entry[0], entry[1]
 		}()
 
@@ -94,8 +99,13 @@ mainLoop:
 			break mainLoop
 		default:
 			fmt.Print(pad.errCmd)
+			pad.Response =""
 		}
+		if pad.Response == "" {
+		fmt.Printf("\n\nThese are available commands:\n%s\n\n",allCommands)
+		} else {
 		fmt.Println(pad.Response)
+		}
 	}
 
 	fmt.Printf(pad.exitMsg)
